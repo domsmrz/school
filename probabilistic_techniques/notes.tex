@@ -487,7 +487,7 @@ Now let us consider $p(n) = \omega(\frac{1}{n})$.
 
 Let $T =$ number of triangles in $G(n,p(n)) = G(n,p)$ and let $T_i$ be indicators of individual triangles (thus $T = \sum T-i$).
 Now we have $E[T] = {n \choose 3} p^3$
-$$\text{Var}[T] = \text{Var}[\sum_i T_i] = \sum_i \text{Var} T_i + \sum_{i \neq j} \text{Cov}[T_i, T_j]$$
+$$\text{Var}[T] = \text{Var}\left[\sum_i T_i\right] = \sum_i \text{Var} [T_i] + \sum_{i \neq j} \text{Cov}[T_i, T_j]$$
 $$\text{Var}[T_i] \leq E[T_i^2] = E[T_i] = p^3$$
 $$\text{Cov}[T_i, T_j] \begin{cases}
 	\leq E[T_i T_j] = p^5 & T_i, T_j \text{ share an edge} \\
