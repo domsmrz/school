@@ -1,0 +1,498 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[margin=3cm]{geometry}
+\usepackage{enumitem}
+\usepackage[super]{nth}
+\usepackage{tabularx}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{epsfig}
+\usepackage{mathtools}
+\usepackage[super]{nth}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{0.5em}
+\setlength{\headheight}{24pt}
+
+\setlist{nosep}
+
+\begin{document}
+ 
+\section*{Probability space}
+\textbf{Definition (Probability space)}: \emph{Probability space} is a triple ($\Omega$, $\Sigma$, $P$), where $\Omega$ is a set, $\Sigma \subseteq 2^{\Omega}$ is a $\sigma$-algebra ($\emptyset \in \Sigma$;
+if $A \in \Sigma \Rightarrow \Omega \setminus A \in \Sigma$, if $A_1, A_2\ldots \in \Sigma$, then $\bigcup^{\infty}_{i=1} A_i \in \Sigma$),
+and $P: M \rightarrow [0,1]$ is a probability measure ($P[\emptyset] = 0, P[\Omega] = 1$,
+if $A_1, A_2\ldots$ are pairwise disjoint elements of $\Sigma$ then $P[\bigcup^{\infty}_{i=1}A_i] = \sum^{\infty}_{i=1} P[A_i]$).
+Elements of $\Sigma$ are called \emph{events}, elements of $\Omega$ are \emph{elementary events}, $P[A]$ is the \emph{probability} of the event $A$.
+
+\textbf{Examples}
+
+\emph{Finite probability space}: ($\Omega$ -- finite, $\Sigma = 2^\Omega$, then $P$ is uniquely determined by a function $\Sigma \rightarrow [0,1]$, s.t. $\sum_{\omega \in \Omega} p(\omega) = 1$, then $P[A] = \sum_{\omega \in A} p(A)$). More specific version, uniformly determined: $p(\omega) = \frac{1}{|\Omega|}$
+
+\emph{Random Graphs}: The probability space $G(n,p)$ of random graphs on $n$ vertices with edge probability $p \in [0,1]$ is given by $\Omega$ -- graphs on fixed $n$ number and $\Sigma$ -- $2^\Omega$.
+For $G$ on $n$ vertices $p(G) = p^n (1-p)^{n \choose k - n}$ where n is the number of edges of $G$
+
+\emph{Random point in a square}:
+$\Omega = [0,1]^2$, $\Sigma$ -- lebesgue measurable subset of $[0,1]^2$
+For $A \in \Sigma: P[A] := \lambda(A)$ -- lebesgue measure = generalization of an area
+
+\textbf{Lemma (Union bound)} Let $(\Omega, \Sigma, P)$ be a prob. space and let $A_1, \ldots, A_n \in \Sigma$ then $P\left[\bigcup^n_{i=1}A_i\right] \leq \sum^n_{i=1} P[A_i]$
+
+\textbf{Proof} Let $B_i = A_i \setminus (A_1 \cup \ldots \cup A_{i-1})$.
+Then $B_i \subseteq A_i, \bigcup^n_i=1 B_i = \bigcup^n_{i=1} A_i$, $B_i$ are pairwise disjoint.
+$P[\bigcup_{i=1}^n A_i] = P[\bigcup_{i=1}^n B_i] = \sum_{i=1}^n P[B_i] \leq \sum_{i=1}^n P[A_i]$
+(since $B \subseteq A \Rightarrow P[B] \leq P[A]$)
+$P[A] = P[(A \setminus B) \cup B] = P[A \setminus B] + P[B] \geq P[B]$
+
+\textbf{Definition (independent events)}:
+
+Let $(\Omega, \Sigma, P)$ be a prob. space then two events $A, B \in \Sigma$ are \emph{independent} if $P[A,B] = P[A] P[B]$
+
+If $A_1, \ldots, A_n \in \Sigma$, then they are \emph{independent} if for every $I \subseteq [n]: P[\bigcap_{i \in I} A_i] = \prod_{i \in I} P[A_i]$
+
+\textbf{Definition (conditional probability)}: let $(\Omega, \Sigma, P)$ be an prob. space and $B \in \Sigma$ s.t. $P[B] > 0$ then the \emph{conditional probability} of $A$, given that $B$ occured is defined $P[A|B] = \frac{P[A \cup B]}{P[B]}$
+
+\textbf{Remark}
+$P[A|B] = P[A]$ if $A, B$ are independent.
+
+\textbf{Estimates}
+
+Fractional:
+\begin{itemize}
+	\item $\left(\frac{n}{2}\right)^{\frac{n}{2}} \leq n! \leq n^n$
+	\item $\left(\frac{n}{e}\right)^n \leq n! \leq en\left(\frac{n}{e}\right)^n$
+	\item stirling formula n! is aprox, lim ... = 0
+\end{itemize}
+
+Binomial coefficients:
+\begin{itemize}
+	\item $\left(\frac{n}{k}\right)^k \leq \frac{n(n-1)\ldots(n-k+1)}{k(k-1)\ldots1} = {n \choose k} \leq \frac{n^k}{k!} \leq n^k$
+	\item ${n \choose k} \leq \left(\frac{en}{k}\right)^k$
+	\item $\frac{2^{2m}}{2\sqrt{m}} \leq {{2m} \choose m} \leq \frac{2^{2m}}{\sqrt{2m}}$
+\end{itemize}
+
+Inequality:
+\begin{itemize}
+	\item $1+x \leq e^x$
+	\item $(1-p)^n \leq e^{-pn}$
+\end{itemize}
+
+\textbf{Definition (expected value)} For finite prob. space $(\Omega, \Sigma, P)$ a \emph{random variable} is a function $X: \Omega \rightarrow \mathbb{R}$,
+\emph{expected value} E[$X$] of a random variable is a value $\sum_{\omega \in \Omega} p(\omega) X(\omega)$, where $p(\omega) = P[\{\omega\}]$
+
+\textbf{Remark} \emph{Linearity of expected value}: $\mathrm{E}[\alpha{}X + \beta{}Y] = \alpha\mathrm{E}[X] + \beta\mathrm{E}[Y]$
+
+\textbf{Application}
+$k$-satisfiability problem
+
+\textbf{Definition (Formula in conjunctive normail form -- CNF)}
+By example
+
+\textbf{Examples}
+
+$(x \lor y \lor z) \land (x \lor \lnot y) \land (\lnot x \lor \lnot y \lor \lnot z \lor t)$.
+Example of satisfaction $x$ = T, $y$ = F, $z$ = F, $t$ = F.
+
+$(x \lor y) \land (x \lor \lnot y) \land (\lnot x \land y) \land (\lnot x \lor \lnot y)$.
+Not satisfiable.
+
+\textbf{Proposition}: Let $\Phi$ be a CNF-formula s.t. every clause contains $k$ distinct literals and with less then $2^k$ clauses then $\Phi$ is satisfiable.
+
+\textbf{Proof}:
+For each variable we assign it true randomly with probability 1/2, independently of the other variables.
+$\Phi = C_1 \land C_2 \land \ldots \land C_t$, where $C_i$ are clauses, $t < 2^k$.
+$P\left[C_i \mathrm{is not satisfied}\right] \leq \frac{1}{2^k}$
+$C_i = (l_1 \lor l_2 \lor \ldots \lor)$, where $l_j$ are literals.
+If $\{x, \lnot x\} \subseteq C_i$, then $P = 0$, otherwise $P = \frac{1}{2^k}$.
+By union bound:
+$P[\mathrm{some}\,C_i\,\mathrm{is\,not\,satisfied}] \leq \frac{t}{2^k} < 1 \Rightarrow$ There exists satisfying assignment.
+
+\subsection*{Maximum intersecting families}
+
+\textbf{Definition (intersecting)} Let $X$ be set of $n$ elements, $k \leq n$ we say that family $\mathcal{F} \subseteq {X \choose k}$ is \emph{intersecting}, if for every $F_1, F_2 \in \mathcal{F}$ we have $F_1 \cap F_2 \neq \emptyset$.
+
+Whenever  $k > \frac{n}{2}$ max. size of int. family is ${n \choose k}$.
+If $n \geq 2k$ we can get ${n-1 \choose k-1}$.
+
+\textbf{Theorem (Erdős-Ko-Rado)} Let $X$ be an $n$-element set, $k$ be s.t. $n \geq 2k$. Then the size of any intersecting family of sets of size $k$ is at most ${n-1 \choose k-1}$.
+
+\textbf{Lemma}
+Let us consider $X = \{0, 1, \ldots n-1\}$ with addition modulo $n$ and let $A_s := \{s, s+1, \ldots s+k-1\}$ for $s \in X$ and assume $n \geq 2k$.
+Then the maximum intersecting family of sets $A_s$ has size at most $k$.
+
+\textbf{Proof}
+Let us assume that some $A_i$ belongs to maximum intersecting family.
+Only the sets $A_{i-k+1}, A_{i-k+2}, \ldots, A_{i-1}, A_i, A_{i+1}, \ldots A_{i+k-2}, A_{i+k-1}$ may belong to the family.
+Furthermore only one set of each pair $A_{x}, A_{x+k}$ may belong to the family $\Rightarrow$ altogether at most $k$ sets.
+
+\textbf{Proof of Erdős-Ko-Rado}
+WLoG $X = \{0, 1, \ldots, n-1\}$. For $s \in \{0, 1, \ldots, n-1\}, \sigma \in S_n$ (permutation) we define:
+$A_{s,\sigma} := \{\sigma(s), \sigma(s+1), \ldots, \sigma(s+k-1)\}$.
+Let $\mathcal{F}$ be the intersecting family.
+We want to estimate $P\left[A_{s,\sigma} \in \mathcal{F}\right]$ if $s$ and $\sigma$ are chosen uniformly at random, independently.
+
+On one hand: $P\left[A_{s,\sigma} \in \mathcal{F}\right] = \frac{|\mathcal{F}|}{{n \choose k}}$ (first choose $s$, then $\sigma$, uniformly chosen subset).
+
+On the other hand: $P\left[A_{s,\sigma} \in \mathcal{F}\right] \leq \frac{k}{n}$ (first choose $\sigma$, then $s$; by previous lemma).
+
+Altogether $\frac{|\mathcal{F}|}{{n \choose k}} = P\left[A_{s,\sigma} \in \mathcal{F}\right] \leq \frac{k}{n} \rightarrow |\mathcal{F}| \leq \frac{k}{n}{{n \choose k}} = {n-1 \choose k-1}$.
+
+\subsection*{Expected values}
+
+\textbf{Definition (random variable)}
+let $(\Omega, \Sigma, P)$ be a probability space.
+A \emph{random variable} is any $P$-measurable function $X: \Omega \rightarrow \mathbb{R}$.
+In finite case any function is $P$-measurable.
+
+\textbf{Definition (expected value)}:
+The \emph{expected value} of random variable $X$ is the value $E[X] := \int_\Omega X dP$.
+In finite case $E[X] = \sum_{\omega \in \Omega} p(\omega) X(\omega)$ where $p(\omega) = P(\{\omega\})$
+Equivalently $E[X] = \sum_{a \in X(\Omega)} aP[X = a]$.
+
+\textbf{Definition (independence of random variables)}:
+Two random variables $X, Y$ are \emph{independent} if $\forall A, B \in \Sigma : P[(X \in A) \land (Y \in B)] = P[X \in A] P[Y \in B]$ 
+
+\textbf{Lemma}
+For probability space $(\Omega, \Sigma, P)$ and random variables $X, Y$ and $\alpha, \beta \in \mathbb{R}$:
+\begin{enumerate}[label=(\roman*)]
+	\item $E[\alpha{}X + \beta{}Y] = \alpha{}E[X] + \beta{}E[Y]$
+	\item $E[XY] = E[X] E[Y]$ if $X$ and $Y$ are independent.
+\end{enumerate}
+
+\textbf{Proof (finite case)}
+\begin{enumerate}[label=(\roman*)]
+	\item $$E[\alpha{}X + \beta{}Y] = \sum_{\omega \in \Omega} p(\omega) (\alpha{}X + \beta{}Y)(\omega) = \sum_{\omega \in \Omega} p(\omega) \alpha{}X(\omega) + p(\omega)\beta{}Y(\omega) = \alpha{}E[X] + \beta{}E[Y]$$
+	\item $$E[XY] = \sum_{c \in XY(\Omega)} c P[XY = c] = \sum_{\substack{a \in X(\Omega) \\ b \in Y(\Omega)}} abP[(X=a) \land (Y=b)] \stackrel{\mathrm{ind.}}{=}$$
+		$$\stackrel{\mathrm{ind.}}{=} \sum_{\substack{a \in X(\Omega) \\ b \in Y(\Omega)}} abP[X=a]P[Y=b] = \left(\sum_{a \in X(\Omega)} aP[X=a]\right) \left(\sum_{b \in Y(\Omega)} bP[Y=b]\right) = E[X]E[Y]$$
+\end{enumerate}
+
+\textbf{Definition (indicator)}:
+For probability space $(\Omega, \Sigma, P)$ and an event $A \in \Sigma$, the \emph{indicator of $A$} is the random variable $I_A : \Omega \rightarrow \mathbb{R}$ defined as:
+$I_A(\omega) = 0$ if $\omega \notin A$, 1 otherwise.
+
+\textbf{Lemma}
+$E[I_A] = P[A]$
+
+\textbf{Proof (finite case)}
+$E[I_A] = \sum_{\omega \in \Omega} p(\omega) I_A(\omega) = \sum_{\omega \in A} p(\omega) = P[A]$
+
+\textbf{Proof (general case)}
+$E[I_A] = \int_{\omega \in \Omega} I_A(\omega) dP(\omega) = \int_{\omega \in A} dP = P[A]$
+
+\textbf{Application}
+The expected value of fixed points in a random permutation. For permutation $\sigma$ of $\{1, 2, \ldots, n\}$, a fixed point is $i \in \{1, 2, \ldots, n\}$ s.t. $\sigma(i) = i$.
+
+\textbf{Proposition}:
+Expected number of fixed points in a permutation on $\{1, \ldots, n\}$ is 1.
+
+\textbf{Proof}
+For $i \in \{1, \ldots, n\}\,\,A_i \ldots i$ is a fixed point.
+$P[A_i] = E[I_{A_i}] = \frac{1}{n}$.
+Expected number of fixed points $E[\sum_i I_{A_i}] = n \cdot \frac{1}{n} = 1$.
+
+\textbf{Definition (Tournament)}
+A \emph{tournament} is a complete directed graph. (Interpretation is that everybody plays with everybody and the direction means the winner.)
+
+\textbf{Definition (Hamiltonian paht over directed graphs)}
+Path over all vertices that follows direction of edges.
+
+\textbf{Remark}
+Each tournament has at least one Hamiltonian path.
+
+\textbf{Theorem (Szele)}
+For every integer $n$ there is a tournament with at least $\frac{n!}{2^{n-1}}$ Hamiltonian paths.
+
+\textbf{Proof}
+Set $\{1, 2, \ldots, n\}$ to be the set of the vertices of the tournament.
+Direct each edge (independently of others) with probability of $\frac{1}{2}$ in one direction and $\frac{1}{2}$ in the second one.
+Consider a permutation $\sigma \in S_n$ and let $X_\sigma$ be a random variable indicating the event that $\sigma(1), \sigma(2), \ldots, \sigma(n)$ forms a Hamiltonian path in this order.
+$E[X_\sigma] = \frac{1}{2^{n-1}}$ (there are $(n-1)$ edges in the path, all of them need to be in correct direction).
+Let $X$ be number of Hamiltonian paths, then $E[X] = \sum_{\sigma \in S_n} E[X_\sigma] = \frac{n!}{2^{n-1}}$, thus there exists an tournament with such number of Hamiltonian paths.
+
+\textbf{Application (MaxSAT)}
+Let $\Phi$ be a formula in conjunctive normal form with $m$ clauses and $k$ distinct literals in each clause.
+Find assignment tat satisfies as many clauses as possible.
+
+\textbf{Proposition}
+There is an assignment for which at least $\frac{2^k - 1}{2^k} m$ are satisfied.
+
+\textbf{Proof}
+Choose a random assignment: for clause $C$ let $A_C$ be an event that $C$ is satisfied in the assignment.
+$E[I_{A_C}] = P[A_C] \geq \frac{2^k - 1}{2^k}$.
+$E[\text{number of satisfied clauses}] = \sum_{C\text{ is clause}} E[I_{A_C}] \geq m \frac{2^k - 1}{2_k}$.
+
+\textbf{Application (MaxCut)}
+We are given a graph $G = (V,E)$. The task is to find splitting $V = A \dot\cup B$ so that the number of edges on the cut between $A$ and $B$ is as large as possible.
+
+\textbf{Proposition}
+For every $G$ we can get cut of size $\frac{m}{2}$ where $m = |E|$.
+
+\textbf{Proof}
+For each vertex $v$, it will be in $A$ with probability $\frac{1}{2}$ and in $B$ with probability $\frac{1}{2}$ independently of other vertices.
+For $e \in E$ let $A_e: e$ belongs to the $AB$-cut.
+$P[A_e] = \frac{1}{2}$.
+$E[\text{edges in cut}] = \sum E[I_{A_e}] = \frac{m}{2}$.
+
+\textbf{Derandomization of MaxCut}
+\begin{enumerate}
+	\item Choose an edge $e$ of $E$, put one vertex of $e$ into $A$ and one into $B$.
+	\item Pick remaining vertices one by one, add them either into $A$ or $B$, so that at least $\frac{1}{2}$ of the edges coming to $A \cup B$ will go into the cut.
+\end{enumerate}
+In each step we put at least as many edges into the cut as outside.
+Therefore we have at least $\frac{m}{2}$ edges in final cut.
+
+\textbf{Derandomization of MaxSAT (sketch)}
+Let us consider formula $(x \lor y \lor z) \land (x \lor \lnot y \lor \lnot z) \land (\lnot x \lor z \lor t)$.
+Pick variables one by one.
+Fix each variable to ``better'' value w.r.t. computed expected number of satisfied clauses in random assignment of remaining variables.
+\begin{itemize}
+	\item $x$ to true: expected value is $1+1+\frac{3}{4}$
+	\item $x$ to false: expected value is $\frac{3}{4} + \frac{3}{4} + 1$
+\end{itemize}
+``better'' approach is to choose $x =$ true.
+This works because $E[I_A] = \frac{1}{2} E[I_{A|B}] + \frac{1}{2} E[I_{A|B^C}]$ if $P[B] = \frac{1}{2}$.
+
+\textbf{Proposition (Balancing vectors)}
+Let $v_i, \ldots, v_n \in \mathbb{R}^n$ be such that $||v_i|| = 1$ for every $i \in \{1,2,\ldots,n\}$.
+Then there are $\varepsilon \in \{-1,1\}$ such that $||\varepsilon_1v_1 + \varepsilon_2v_2 + \ldots + \varepsilon_nv_n|| \leq \sqrt{n}$.
+Also there are $\varepsilon \in \{-1,1\}$ such that $||\varepsilon_1v_1 + \varepsilon_2v_2 + \ldots + \varepsilon_nv_n|| \geq \sqrt{n}$.
+Furthermore the these bounds are tight (can be proven via diagonal and its norm).
+
+\textbf{Proof}
+Pick each $\varepsilon_i$ to be equal to $-1$ with probability $\frac{1}{2}$ and $1$ with probability $\frac{1}{2}$ independently of others.
+Let $X = ||\varepsilon_1v_i + \ldots + \varepsilon_nv_n||^2$.
+$E[X] = E[\sum_{i,j = 1}^n \varepsilon_i \varepsilon_j \langle v_i, v_j \rangle] \stackrel{\text{lin.}}{=} \sum_{i,j = 1}^n E[\varepsilon_i \varepsilon_j] \langle v_i, v_j \rangle$.
+Since $E[\varepsilon_i \varepsilon_i] = 1$ and $E[\varepsilon_i \varepsilon_j] = 0$ for $i \neq j$ it holds:
+$E[X] = \sum_{i=1}^n \langle v_i, v_i \rangle = \sum_{i=1}^n ||v_i||^2 = n$.
+
+\subsection*{Alterations}
+
+\textbf{Proposition (weak form of Turán's theorem)}
+Let $G = (V,E)$ be a graph with $n$ vertices and $m$ edges and let $d = \frac{2m}{n}$ denotes the average degree.
+Then $\alpha (G) \geq \frac{n}{2d}$.
+
+\textbf{Remark}
+Full version on Turán's theorem gives $\alpha (G) \geq \frac{n}{d+1}$
+
+\textbf{Proof (of weak Turán's theorem)}
+Consider $p \in [0,1]$.
+Pick a random subset $S \subseteq V$ s.t. each vertex belongs to $S$ with probability $p$, independently of others.
+Consider two random variables $X = |S|$ and $Y = |E(G[S])|$.
+$E[X] = pn$.
+$E[Y] = p^2m$.
+$E[X-Y] = p(n - pm) = p(n - \frac{dn}{2}) = pn(1-p\frac{d}{2})$.
+Choose $p = \frac{1}{d}$, then:
+$E[X-Y] = \frac{n}{2d}$.
+Remove the vertex from each edge, then we get independent set of size at least $\frac{n}{2d}$.
+
+\textbf{Lemma (Markov's inequality)}
+Let $X$ be a nin-negative random variable, let $a > 0$.
+Then $P[X \geq a] \leq \frac{E[X]}{a}$.
+
+\textbf{Proof}
+$E[X] \geq a P[X \geq a]$
+
+\textbf{Definition (proper $k$-coloring)}
+Let $G = (V,E)$ be a graph.
+Then \emph{proper $k$-coloring} of $G$ is a function $c: V \rightarrow \{1, 2, \ldots k\}$ such that $c(u) \neq c(v)$ for any $uv \in E$.
+
+\textbf{Definition (chromatic number)}
+\emph{Chromatic number} of $G$ is the minimum $k \in \mathbb{N}$ s.t. $G$ admits proper $k$-coloring.
+
+\textbf{Definition (Girth)}
+A \emph{girth} of $G$, $g(G)$ is the length of the shortest cycle in $G$.
+If $G$ is forest let $g(G) = \infty$.
+
+\textbf{Theorem (Erdős)}
+For every $k,l > 0$ there is a graph $G$ such that $g(G) > l, \chi(G) > k$.
+
+\textbf{Proof}
+WLoG $k,\ell \geq 3$.
+We set $\varepsilon = \frac{1}{2\ell}, p = n^{\varepsilon - 1}$.
+Consider $G(n,p)$.
+For $i \in \{3, \ldots, \ell\}$ the cycles of size $i$ on $K_n$: ${n \choose i} \frac{(n-1)!}{2} \leq n^i$.
+Let $X$ be a random variable of the number of cycles of length at most $\ell$.
+$$E[X] \leq \sum_{i=3}^\ell n^ip^i = \sum_{i=3}^\ell n^{i\varepsilon} \leq \ell n^{\frac{1}{2\ell}\ell} = \ell n^\frac{1}{2} = o(n)$$
+Thus for $n$ large enough: $E[X] < \frac{n}{4}$.
+By Markov's inequality: $P[X > \frac{n}{2}] < \frac{\frac{n}{4}}{\frac{n}{2}} = \frac{1}{2}$.
+
+Bound for chromatic number by independence number.
+Let $a = \ceil{\frac{3}{p} \log n} + 1$.
+Then $\frac{3}{p} \log n \leq a - 1 \leq \frac{4}{p} \log n$ (from $n$ large enough).
+Let $\alpha$ be random variable denoting independence number of $G$.
+$$P\left[\alpha \geq a\right] \leq {n \choose a} \left(1 - p\right)^{a \choose 2} \leq n^a\ell^{-p{a \choose 2}}
+= \exp\left(a\left(\log n - p \frac{a-1}{2}\right)\right) \leq \exp\left(a\left(\log n - \frac{p}{2} \frac{3 \log n}{p}\right)\right) =$$
+$$= \exp\left(a\left(-\frac{1}{2} \log n\right)\right) \stackrel{n \rightarrow \infty}{\rightarrow} 0$$
+For $n$ large enough $P[\alpha \geq a] < \frac{1}{2}$.
+By union bound there is $G$ with: $n$ vertices, has at most $\frac{n}{2}$ cycles of length $\ell$, $\alpha(G) < a$.
+Finally let us obtain $G'$ be removing vertex from each cycle of $G$.
+Then $G'$ has at least $\frac{n}{2}$ vertices, $g(G') > \ell$, $\alpha(G') < a$, $\chi(G') \geq \frac{\frac{n}{2}}{a-1} \geq \frac{p}{4 \log n} \frac{n}{2} = \frac{n^{\varepsilon}}{8 \log n} \rightarrow \infty$.
+For $n$ large enough $\chi(G') > k$ as we wanted.
+
+\textbf{Theorem (Bayes theorem)}
+Let $A, B_1, B_2, \ldots, B_n \subseteq \Omega$ be events s.t. $B_1, B_2, \ldots, B_n$ are pairwise disjoint cover $\Omega$, $P[B_i] > 0$.
+Then $P[B_i|A] = \frac{P[A | B_i] P[B_i]}{\sum_{j=1}^n P[A|B_j] P[B_j]}$
+
+\textbf{Observation:}
+$P[A] = \sum_{j=1}^n \underbrace{P[A|B_j] P[B_j]}_{P[A \cap B_j]}$.
+
+\textbf{Proof (Bayes theorem)}
+$P[B_i|A] = \frac{P[A \cap B_i]}{P[A]} = \frac{P[A|B_i]P[B_i]}{P[A]}$ we finish by the observation.
+
+\textbf{Problem (Matrix multiplication testing)}
+Let $A,B,C$ be $n \times n$ matrices.
+We would like to test whether $AB = C$.
+
+One method is to compute $AB$ -- currently in time approximately $O(n^{2.37})$.
+Our goal is to get test in time close to $O(n^2)$.
+
+\textbf{Algorithm (Freivalds' algorithm)}
+For parameter $k \in \mathbb{N}$ run in time $O(k n^2)$ will answer correctly with probability at least $1 - 2^k$.
+
+Generate a random $0,1$ vector (generates each entry with probability $\frac{1}{2}$ independently of others) $r$ with $n$ entries.
+Test whether $A(Br) - Cr = 0$.
+
+If $AB = C$ then $ABr = Cr \rightarrow ABr - Cr = 0$
+In this case algorithm always answers yes.
+
+If $AB \neq C$, aim is that we can answer no with probability $\frac{1}{2}$.
+Let $D = AB - C$, then $D$ has a non-zero entry $d_{i,j}$.
+Let $Dr = v$, then $v_i = \sum_{k=1}^n d_{i,k}r_k = d_{i,j} r_j + y$.
+Then $P[v_i = 0] = P[v_i = 0 | y = 0] P[y = 0] + P[v_i = 0 | y \neq 0] P[y \neq 0]$
+
+\[\arraycolsep=1.4pt\def\arraystretch{2.2}
+\begin{array}{rccc}
+	P[v_i = 0] =& P[v_i = 0 | y = 0] P[y = 0] &+& P[v_i = 0 | y \neq 0] P[y \neq 0] \\
+	=& \frac{1}{2} P[y=0] &+& P[v_i = 0 | y \neq 0] P[y \neq 0] \\
+	\leq& \frac{1}{2} P[y=0] &+& \frac{1}{2} P[y \neq 0] \\
+	=& \multicolumn{3}{l}{\frac{1}{2}}
+\end{array}
+\]
+\dots and check if $P[y = 0] = 0$ or $P[y \neq 0] = 0$.
+
+\textbf{Problem (small triangles in a square)}
+Consider a set $T \subseteq [0,1]^2$ (finite).
+We set $S(T)$ be the smallest area of a triangle determined by points of $T$.
+
+Question: If $|T| = n$ how big can $S(T)$ be?
+We will see: There is $T$ with $S(T) \geq \frac{1}{100n^2}$ (reachable $\Omega\left(\frac{\log n}{n^2}\right)$).
+
+\textbf{Proof}
+Preliminary computations:
+Consider three random points $P,Q,R$ uniformly chosen, independently.
+Let $\lambda(PQR)$ denote the area of $PQR$ triangle
+First aim: bound $P[\lambda(PQR) \leq \varepsilon]$.
+
+$$W := \text{dist}(P,Q),\:\Delta > 0\text{ (real parameter)}, i \in \mathbb{N}$$
+$$P[\underbrace{W \in [(i-1)\Delta, i\Delta}_{B_i}] \leq \pi(i^2\Delta^2 - (i-1)^2\Delta^2) = \pi(2i-1)\Delta^2$$
+$$P[\lambda(PQR) \leq \varepsilon] = \sum_{i=1}^{\floor{\frac{\sqrt{2}}{\Delta}} + 1} P[\lambda(PQR) \leq \varepsilon|B_i] P[B_i]$$
+$$P[\lambda(PQR) \leq \varepsilon | B_i] \leq \frac{\sqrt{2} \cdot 4\varepsilon}{(1-i) \Delta}$$
+$$P[\lambda(PQR) \leq \varepsilon] = P[\lambda(PQR) \leq \varepsilon | B_1] P[B_1] + \sum_{i=2}^{\floor{\frac{\sqrt{2}}{\Delta}} + 1} P[\lambda(PQR) \leq \varepsilon | B_i] P[B_i] \leq $$
+$$\leq 1 \pi \Delta^2 + \sum_{i=2}^{\floor{\frac{\sqrt{2}}{\Delta}} + 1} \frac{4 \varepsilon}{(i-1) \Delta} \sqrt(2) \pi (2i - 1) \Delta^2 =$$
+$$= \pi \Delta^2 + \sum_{i=2}^{\floor{\frac{\sqrt{2}}{\Delta}} + 1} 4\sqrt{2} \pi \varepsilon \frac{2i - 1}{i-1} \Delta$$
+
+Take $\Delta \rightarrow 0$
+The aim is: $$P[\lambda \leq \varepsilon] \leq 4\sqrt{2} \pi \varepsilon 2 \sqrt{2} = 16 \pi \varepsilon$$
+(requires one more limit pass, we shall skip)
+Easier one is: $$P[\lambda \leq \varepsilon] \leq 4\sqrt{2} \pi \varepsilon 3 \sqrt{2}$$
+By ineq. $2 + \frac{1}{i-2} \leq 3$
+
+Consider $2n$ random points in $[0,1]^2$ (chosen uniformly, independently).
+Let $X$ be a number of triangles with area at most $\frac{1}{100n^2}$.
+$$E[X] \leq {2n \choose 3} 16 \pi \frac{1}{100 n^2} \leq \frac{8n^3}{6} \cdot \frac{16 \pi}{100 n^2} < \frac{600n^3}{600n^2} < n$$
+
+Thus there is $S$ with at most $n$ triangles with area at most $\frac{1}{100n^2}$.
+Let us remove one point from each such triangle.
+
+\section*{\nth{2} moment method}
+\textbf{Definition (Variance)}
+Let $X$ be a random variable.
+Then the \emph{variance} of $X$ is defined as:
+$\text{var}[X] = E[(X-E[X])^2] = E[X^2] - (E[X])^2$
+
+\textbf{Definition (Standard deviation)}
+$\sigma = \sqrt{\text{var}[X]}$
+Equivalently: $E[|X - E[X]|]$ (but this is much harder to work with).
+
+\textbf{Definition (Covariance)}
+Let $X, Y$ be random variables, then \emph{covariance} of $X$ and $Y$ is defined as $\text{Cov}[X,Y] = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X]E[Y]$
+
+\textbf{Remark}
+If $X, Y$ are independent then $\text{Cov}[X, Y] = 0$.
+
+\textbf{Lemma}
+Let $X_1, X_2, \ldots, X_n$ be random variables.
+Then $$\text{Var}\left[\sum_{i=1}^n X_i\right] = \sum_{i=1}^n \text{Var}[X_i] + \sum_{i \neq j} \text{Cov}[X_i, X_j]$$
+
+\textbf{Proof}
+$$\text{Var}\left[\sum_{i=1}^n X_i\right] = E\left[\left(\sum_{i=1}^n X_i\right)\left(\sum_{j=1}^n X_j\right)\right] - \left(\sum_{i=1}^n E[X_i]\right)\left(\sum_{j=1}^n E[X_j]\right) =$$
+$$= E\left[\sum_{i=1}^n X_i^2\right] + E \left[\sum_{i \neq j} X_i X_j\right] - \sum_{i=1}^n\left(E[X_i]\right)^2 - \sum_{i \neq j} E[X_i] E[X_j] =
+\sum_{i=1}^n \text{Var}[X_i] + \sum_{i \neq j} \text{Cov}[X_i, X_j]$$
+
+\textbf{Lemma (Chebyshev inequality)}
+Let $X$ be a random variable with finite variance and $t > 0$.
+Then $P[|X - E[X]| \geq t] \leq \frac{\text{Var}[X]}{t^2}$.
+
+\textbf{Proof}
+Let us define random variable $Y = (X - E[X])^2$.
+Then $$P[|X - E[X]| \geq t] = P[Y \geq t^2] \stackrel{\text{Markov}}{\leq} \frac{E[Y]}{t^2} = \frac{\text{Var}[X]}{t^2}$$
+
+\textbf{Problem}
+Consider random graph $G(n, p)$, estimate probability that $G(n, p)$ contains a triangle.
+
+Expectation: if $p$ is very small than the probability is almost 0, if $p$ is very large than the probability is almost 1.
+
+Let $X$ be the number of triangles in $G(n,p)$, than $E[X] = {n \choose 3} p^3$
+If $p$ is function of $n$ and in $o(\frac{1}{n})$, then $E[X] \stackrel{n \rightarrow \infty}{\rightarrow} 0$.
+It holds: $P[G(n,p) \text{ contains } \bigtriangleup] \stackrel{\text{Markov}}{\leq} E[X]$ thus $P[G(n,p) \text{ contains } \bigtriangleup] \rightarrow 0$.
+
+We would like to know whether if $p = \omega(\frac{1}{n})$ then $P[G(n,p) \text{ contains } \bigtriangleup] \rightarrow 1$
+We know that $E[X] \rightarrow \infty$
+
+\textbf{Definition (Monotone property)}
+A graph property $A$ is \emph{monotone}, if for every two graphs $G, H$ with $V(G) = V(H)$, $E(H) \subseteq E(G)$, we get if $H$ has $A$, then $G$ has $A$.
+
+\textbf{Definition (Threshold function)}
+A function $r: \mathbb{N} \rightarrow \mathbb{R}$ is a \emph{threshold function} for property $A$ if for every function $p: \mathbb{N} \rightarrow [0,1]$ we get:
+$$\lim_{n \rightarrow \infty} P[G(n, p(n)) \text{ has } A] = \begin{cases}
+	0 & p(n) = o(r(n)) \\
+	1 & \omega(r(n) \Leftrightarrow r(n) = o(p(n))
+\end{cases}$$
+
+\textbf{Problem (cont.)}
+
+\textbf{Theorem}
+The function $\frac{1}{n}$ is a threshold function for the property ``G contains a triangle''.
+
+\textbf{Lemma}
+Let $X_1, X_2, \ldots$ be non-negative random variables such that $\lim_{n \rightarrow \infty} \frac{\text{Var}[X_n]}{(E[X_n])^2} = 0$, then $\lim_{n \rightarrow \infty} P[X_n > 0] = 1$.
+
+\textbf{Proof}
+It holds that $P[|X - E[X]| \geq E[X_n]] \leq \frac{\text{Var}[X_n]}{(E[X_n])^2}$ and $P[X_n > 0] = 1-P[X_n = 0] \geq 1 - \frac{\text{Var}[X_n]}{(E[X_n])^2}$.
+Then it follows $P[X_n > 0] = 1 - 0 = 1$
+
+\textbf{Proof of the theorem}
+Case $p(n) = o(\frac{1}{n})$ we already concluded.
+Now let us consider $p(n) = \omega(\frac{1}{n})$.
+
+Let $T =$ number of triangles in $G(n,p(n)) = G(n,p)$ and let $T_i$ be indicators of individual triangles (thus $T = \sum T-i$).
+Now we have $E[T] = {n \choose 3} p^3$
+$$\text{Var}[T] = \text{Var}[\sum_i T_i] = \sum_i \text{Var} T_i + \sum_{i \neq j} \text{Cov}[T_i, T_j]$$
+$$\text{Var}[T_i] \leq E[T_i^2] = E[T_i] = p^3$$
+$$\text{Cov}[T_i, T_j] \begin{cases}
+	\leq E[T_i T_j] = p^5 & T_i, T_j \text{ share an edge} \\
+	\stackrel{T_iT_j \text{ ind.}}{=} 0 & T_i, T_j \text{ edge disjoint}
+\end{cases}$$
+$$\frac{\text{Var}[T]}{(E[T])^2} \leq \frac{{n \choose 3} p^3 + {n \choose 2}(n-2)(n-3)p^5}{\left({n \choose 3} p^3\right)^2} = O\left(\frac{1}{n^3p^3} + \frac{1}{n^2p}\right) \stackrel{\text{if } p = \omega\left(\frac{1}{n}\right)}{\rightarrow} 0$$
+Concluded by lemma.
+\end{document}
